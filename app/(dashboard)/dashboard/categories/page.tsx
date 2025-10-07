@@ -30,7 +30,8 @@ export default function CategoriesPage() {
       const data = await res.json();
       setCategories(data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      logger.error("Error fetching categories", error, { context: 'CategoriesPage' });
+      showError("Kategoriler yüklenirken hata oluştu");
     } finally {
       setLoading(false);
     }
@@ -55,11 +56,13 @@ export default function CategoriesPage() {
         setShowForm(false);
         setEditingCategory(null);
         setFormData({ type: "customer", name: "" });
+        showSuccess(editingCategory ? "Kategori güncellendi!" : "Kategori oluşturuldu!");
       } else {
-        alert("Hata oluştu!");
+        showError("İşlem başarısız oldu!");
       }
     } catch (error) {
-      alert("Hata oluştu!");
+      logger.error("Category save error", error, { context: 'CategoriesPage' });
+      showError("Bağlantı hatası oluştu!");
     } finally {
       setLoading(false);
     }
@@ -78,11 +81,13 @@ export default function CategoriesPage() {
       const res = await fetch(`/api/categories/${id}`, { method: "DELETE" });
       if (res.ok) {
         await fetchCategories();
+        showSuccess("Kategori silindi!");
       } else {
-        alert("Hata oluştu!");
+        showError("Kategori silinemedi!");
       }
     } catch (error) {
-      alert("Hata oluştu!");
+      logger.error("Category delete error", error, { context: 'CategoriesPage' });
+      showError("Bağlantı hatası oluştu!");
     }
   };
 

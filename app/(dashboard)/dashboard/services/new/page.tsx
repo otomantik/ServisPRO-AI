@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { logger } from "@/lib/logger";
+import { showSuccess, showError } from "@/lib/toast";
 
 export default function NewServicePage() {
   const router = useRouter();
@@ -30,7 +32,8 @@ export default function NewServicePage() {
       setCustomers(customersData.customers || customersData || []);
       setTechnicians((usersData || []).filter((user: any) => user.position === "Teknisyen"));
     }).catch(err => {
-      console.error("Failed to load data:", err);
+      logger.error("Failed to load data", err, { context: 'NewServicePage' });
+      showError("Veriler yüklenirken hata oluştu");
       setCustomers([]);
       setTechnicians([]);
     });
@@ -48,12 +51,14 @@ export default function NewServicePage() {
       });
 
       if (res.ok) {
+        showSuccess("Servis kaydı oluşturuldu!");
         router.push("/dashboard/services");
       } else {
-        alert("Hata oluştu!");
+        showError("Servis kaydedilemedi!");
       }
     } catch (error) {
-      alert("Hata oluştu!");
+      logger.error("Service creation error", error, { context: 'NewServicePage' });
+      showError("Bağlantı hatası oluştu!");
     } finally {
       setLoading(false);
     }

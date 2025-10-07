@@ -1,0 +1,37 @@
+# .env DOSYASI OLUŞTURMA REHBERİ
+
+## ADIM 1: Dosyayı Oluştur
+Proje klasöründe (Oto-Beyaz) yeni bir dosya oluştur:
+- Dosya adı: .env
+- Uzantı yok, sadece .env
+
+## Windows'ta Oluşturma:
+1. Proje klasörüne gel (Oto-Beyaz)
+2. Notepad aç
+3. Aşağıdaki içeriği kopyala-yapıştır
+4. "Dosya" → "Farklı Kaydet"
+5. Dosya adı: .env (tırnak içinde yaz!)
+6. Dosya türü: "Tüm Dosyalar (*.*)" seç
+7. Kaydet
+
+## ADIM 2: İçeriği Yapıştır
+==================================================
+# Database
+DATABASE_URL="file:./prisma/dev.db"
+
+# Authentication
+SESSION_SECRET="dev-secret-key-please-change-in-production"
+NEXTAUTH_URL="http://localhost:5000"
+NEXTAUTH_SECRET="dev-nextauth-secret-change-this"
+
+# Environment
+NODE_ENV="development"
+
+# Logging
+LOG_LEVEL="debug"
+==================================================
+
+## ADIM 3: Kaydet ve Kapat
+
+HAZIR! ✅
+

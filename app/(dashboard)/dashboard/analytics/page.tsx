@@ -72,12 +72,14 @@ export default function AnalyticsPage() {
           <Sparkles className="w-8 h-8 text-blue-600" />
           AI Destekli Analizler
         </h1>
-        <p className="text-gray-600 mt-1">
-          İşletmeniz için derin içgörüler ve öneriler
+        <div className="flex items-center gap-2 mt-1">
+          <p className="text-gray-600">
+            İşletmeniz için derin içgörüler ve öneriler
+          </p>
           {!ai.isLive && (
-            <Badge variant="outline" className="ml-2">Demo Mode</Badge>
+            <Badge variant="outline">Demo Mode</Badge>
           )}
-        </p>
+        </div>
       </div>
 
       {/* Tabs */}

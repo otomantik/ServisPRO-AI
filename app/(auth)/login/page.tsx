@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -34,13 +34,17 @@ export default function LoginPage() {
       const data = await response.json()
 
       if (response.ok) {
-        // Başarılı giriş - dashboard'a yönlendir
+        // BaÅŸarÄ±lÄ± giriÅŸ - dashboard'a yÃ¶nlendir
         router.push("/dashboard")
       } else {
-        setError(data.error || "Giriş yapılamadı")
+        setError(
+     typeof data.error === 'string' 
+       ? data.error 
+       : data.error?.message || data.message || "Giriş yapılamadı"
+   )
       }
     } catch (err) {
-      setError("Bir hata oluştu. Lütfen tekrar deneyin.")
+      setError("Bir hata oluÅŸtu. LÃ¼tfen tekrar deneyin.")
     } finally {
       setLoading(false)
     }
@@ -49,7 +53,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo ve Başlık */}
+        {/* Logo ve BaÅŸlÄ±k */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-4">
             <Home className="w-8 h-8 text-white" />
@@ -58,7 +62,7 @@ export default function LoginPage() {
             ServisPro AI
           </h1>
           <p className="text-gray-600">
-            Akıllı Servis Yönetimi
+            AkÄ±llÄ± Servis YÃ¶netimi
           </p>
         </div>
 
@@ -66,10 +70,10 @@ export default function LoginPage() {
         <Card className="shadow-xl border-0">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-2xl font-bold text-gray-900">
-              Hoş Geldiniz
+              HoÅŸ Geldiniz
             </CardTitle>
             <CardDescription>
-              Hesabınıza giriş yapın
+              HesabÄ±nÄ±za giriÅŸ yapÄ±n
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -97,13 +101,13 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Şifre</Label>
+                <Label htmlFor="password">Åifre</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10"
@@ -128,7 +132,7 @@ export default function LoginPage() {
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5"
                 disabled={loading}
               >
-                {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
+                {loading ? "GiriÅŸ yapÄ±lÄ±yor..." : "GiriÅŸ Yap"}
               </Button>
             </form>
 
@@ -177,7 +181,7 @@ export default function LoginPage() {
                 >
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                    <span className="text-sm">Operatör - melek@oto.com</span>
+                    <span className="text-sm">OperatÃ¶r - melek@oto.com</span>
                   </div>
                 </Button>
               </div>
@@ -188,10 +192,11 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500">
-            © 2024 Oto-Beyaz AI. Tüm hakları saklıdır.
+            Â© 2024 Oto-Beyaz AI. TÃ¼m haklarÄ± saklÄ±dÄ±r.
           </p>
         </div>
       </div>
     </div>
   )
 }
+

@@ -28,6 +28,7 @@ import {
 import Link from "next/link"
 import { routes } from "@/lib/routes"
 import { formatDate, formatCurrency } from "@/lib/utils"
+import { logger } from "@/lib/logger"
 
 function getCustomerTypeIcon(type: string) {
   return type === 'corporate' ? Building : User
@@ -56,7 +57,7 @@ export default function CustomersPage() {
           setCustomers(data.customers || data)
         }
       } catch (error) {
-        console.error('Failed to load customers:', error)
+        logger.error('Failed to load customers', error, { context: 'CustomersPage' })
       } finally {
         setLoading(false)
       }

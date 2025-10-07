@@ -16,9 +16,14 @@ const districts: Record<string, string[]> = {
 async function main() {
   console.log('🌱 Seed başlıyor...');
 
-  // Temizlik
+  // Temizlik (foreign key sırasına dikkat)
+  await prisma.serviceNote.deleteMany();
+  await prisma.serviceOperation.deleteMany();
+  await prisma.servicePhoto.deleteMany();
   await prisma.cashTransaction.deleteMany();
   await prisma.stockMovement.deleteMany();
+  await prisma.payment.deleteMany();
+  await prisma.invoice.deleteMany();
   await prisma.stock.deleteMany();
   await prisma.periodicDevice.deleteMany();
   await prisma.periodicMaintenance.deleteMany();

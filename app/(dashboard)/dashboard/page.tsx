@@ -74,7 +74,7 @@ export default function DashboardPage() {
           setStats(data)
         }
       } catch (error) {
-        console.error('Dashboard yüklenemedi:', error)
+        logger.error('Failed to load dashboard', error, { context: 'DashboardPage' })
       } finally {
         setLoading(false)
       }
@@ -102,12 +102,12 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
             Hoş Geldiniz! 👋
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base">
             ServisPro AI - Akıllı servis yönetimi ile işlerinizi kolaylaştırın
           </p>
         </div>
@@ -126,7 +126,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {/* Services */}
         <Card className="relative overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => window.location.href = '/dashboard/services'}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -134,17 +134,19 @@ export default function DashboardPage() {
             <Wrench className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-blue-600">
+            <div className="text-2xl sm:text-3xl font-bold text-blue-600">
               {stats.services.total}
             </div>
-            <div className="flex items-center justify-between mt-3">
+            <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
               <div className="flex items-center text-xs text-green-600">
                 <CheckCircle className="w-3 h-3 mr-1" />
-                {stats.services.completed} tamamlandı
+                <span className="hidden xs:inline">{stats.services.completed} tamamlandı</span>
+                <span className="xs:hidden">{stats.services.completed}</span>
               </div>
               <div className="flex items-center text-xs text-orange-600">
                 <Clock className="w-3 h-3 mr-1" />
-                {stats.services.pending} bekliyor
+                <span className="hidden xs:inline">{stats.services.pending} bekliyor</span>
+                <span className="xs:hidden">{stats.services.pending}</span>
               </div>
             </div>
           </CardContent>
@@ -158,12 +160,13 @@ export default function DashboardPage() {
             <Users className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">
+            <div className="text-2xl sm:text-3xl font-bold text-green-600">
               {stats.customers.total}
             </div>
             <div className="flex items-center text-xs text-green-600 mt-3">
               <TrendingUp className="w-3 h-3 mr-1" />
-              Son 30 günde {stats.customers.new30Days} yeni müşteri
+              <span className="hidden sm:inline">Son 30 günde {stats.customers.new30Days} yeni</span>
+              <span className="sm:hidden">+{stats.customers.new30Days} yeni</span>
             </div>
           </CardContent>
           <div className="absolute top-0 right-0 w-32 h-32 bg-green-100 rounded-full -translate-y-16 translate-x-16 opacity-20"></div>
@@ -176,19 +179,21 @@ export default function DashboardPage() {
             <Package className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-orange-600">
+            <div className="text-2xl sm:text-3xl font-bold text-orange-600">
               {stats.stock.total}
             </div>
             <div className="flex items-center text-xs mt-3">
               {stats.stock.lowStock > 0 ? (
                 <div className="flex items-center text-red-600">
                   <AlertCircle className="w-3 h-3 mr-1" />
-                  {stats.stock.lowStock} ürün kritik seviyede
+                  <span className="hidden sm:inline">{stats.stock.lowStock} ürün kritik</span>
+                  <span className="sm:hidden">{stats.stock.lowStock} kritik</span>
                 </div>
               ) : (
                 <div className="flex items-center text-green-600">
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  Stoklar yeterli
+                  <span className="hidden sm:inline">Stoklar yeterli</span>
+                  <span className="sm:hidden">Yeterli</span>
                 </div>
               )}
             </div>
@@ -203,12 +208,13 @@ export default function DashboardPage() {
             <DollarSign className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
-            <div className={`text-3xl font-bold ${stats.financial.netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <div className={`text-xl sm:text-2xl md:text-3xl font-bold ${stats.financial.netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {formatCurrencyTR(stats.financial.netProfit)}
             </div>
             <div className="flex items-center text-xs text-gray-600 mt-3">
               <CreditCard className="w-3 h-3 mr-1" />
-              Bu yıl toplam kar/zarar
+              <span className="hidden sm:inline">Bu yıl toplam</span>
+              <span className="sm:hidden">Yıllık</span>
             </div>
           </CardContent>
           <div className="absolute top-0 right-0 w-32 h-32 bg-purple-100 rounded-full -translate-y-16 translate-x-16 opacity-20"></div>
@@ -353,33 +359,33 @@ export default function DashboardPage() {
       <Card>
         <CardHeader>
           <CardTitle>Hızlı İşlemler</CardTitle>
-          <CardDescription>
+          <CardDescription className="hidden sm:block">
             Sık kullanılan işlemler için hızlı erişim
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button asChild className="h-24 flex flex-col">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            <Button asChild className="h-20 sm:h-24 flex flex-col text-xs sm:text-sm">
               <Link href="/dashboard/services/new">
-                <Wrench className="w-8 h-8 mb-2" />
+                <Wrench className="w-6 h-6 sm:w-8 sm:h-8 mb-1 sm:mb-2" />
                 Yeni Servis
               </Link>
             </Button>
-            <Button asChild variant="outline" className="h-24 flex flex-col">
+            <Button asChild variant="outline" className="h-20 sm:h-24 flex flex-col text-xs sm:text-sm">
               <Link href="/dashboard/customers/new">
-                <Users className="w-8 h-8 mb-2" />
+                <Users className="w-6 h-6 sm:w-8 sm:h-8 mb-1 sm:mb-2" />
                 Yeni Müşteri
               </Link>
             </Button>
-            <Button asChild variant="outline" className="h-24 flex flex-col">
+            <Button asChild variant="outline" className="h-20 sm:h-24 flex flex-col text-xs sm:text-sm">
               <Link href="/dashboard/stock/new">
-                <Package className="w-8 h-8 mb-2" />
+                <Package className="w-6 h-6 sm:w-8 sm:h-8 mb-1 sm:mb-2" />
                 Stok Ekle
               </Link>
             </Button>
-            <Button asChild variant="outline" className="h-24 flex flex-col">
+            <Button asChild variant="outline" className="h-20 sm:h-24 flex flex-col text-xs sm:text-sm">
               <Link href="/dashboard/kasa/new">
-                <CreditCard className="w-8 h-8 mb-2" />
+                <CreditCard className="w-6 h-6 sm:w-8 sm:h-8 mb-1 sm:mb-2" />
                 Kasa Hareketi
               </Link>
             </Button>

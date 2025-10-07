@@ -278,7 +278,7 @@ async function main() {
 
   console.log('👨‍👩‍👧‍👦 Müşteriler oluşturuluyor...')
   
-  const customers = []
+  const customers: any[] = []
   for (let i = 0; i < 50; i++) {
     const customer = await prisma.customer.create({
       data: {
@@ -298,7 +298,7 @@ async function main() {
 
   console.log('📦 Stok kalemleri oluşturuluyor...')
   
-  const stocks = []
+  const stocks: any[] = []
   for (const item of stockItems) {
     const stock = await prisma.stock.create({
       data: {
@@ -322,7 +322,7 @@ async function main() {
   startDate.setMonth(startDate.getMonth() - 1) // 1 ay geriye
   const endDate = new Date()
 
-  const services = []
+  const services: any[] = []
   const serviceCount = 150 // 1 ayda 150 servis ~ günde 5 servis
 
   for (let i = 0; i < serviceCount; i++) {
@@ -423,7 +423,7 @@ async function main() {
   
   // Kurumsal müşteriler için periyodik bakım sözleşmeleri
   const corporateCustomers = customers.filter(c => c.type === 'corporate')
-  const periodicMaintenances = []
+  const periodicMaintenances: any[] = []
   
   for (let i = 0; i < Math.min(5, corporateCustomers.length); i++) {
     const customer = corporateCustomers[i]

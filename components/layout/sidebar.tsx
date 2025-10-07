@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -109,32 +109,46 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
 
+  // Body scroll kontrolü - mobile menü açıldığında scroll'u kapat
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    
+    // Cleanup
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [sidebarOpen])
+
   return (
     <>
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity" onClick={() => setSidebarOpen(false)} />
         </div>
       )}
 
       {/* Sidebar */}
       <div className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
         sidebarOpen ? "translate-x-0" : "-translate-x-full",
         collapsed && "lg:w-16"
       )}>
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200">
+          <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
             {!collapsed && (
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                   <Wrench className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-gray-900">ServisPro AI</h1>
-                  <p className="text-xs text-gray-500">Akıllı Yönetim</p>
+                  <h1 className="text-lg font-bold text-gray-900 dark:text-white">ServisPro AI</h1>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Akıllı Yönetim</p>
                 </div>
               </div>
             )}
@@ -161,13 +175,13 @@ export function Sidebar() {
 
           {/* Search */}
           {!collapsed && (
-            <div className="p-4 border-b border-gray-200">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                 <input
                   type="text"
                   placeholder="Ara..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
             </div>
@@ -184,8 +198,8 @@ export function Sidebar() {
                   className={cn(
                     "group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                     isActive
-                      ? "bg-blue-50 text-blue-700 border border-blue-200"
-                      : "text-gray-700 hover:bg-gray-50 hover:text-gray-900",
+                      ? "bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-200 border border-blue-200 dark:border-blue-700"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white",
                     collapsed && "justify-center"
                   )}
                 >
@@ -208,7 +222,7 @@ export function Sidebar() {
           </nav>
 
           {/* Bottom Navigation */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <div className="space-y-1">
               {bottomNavigation.map((item) => {
                 const isActive = pathname === item.href
@@ -219,8 +233,8 @@ export function Sidebar() {
                     className={cn(
                       "group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                       isActive
-                        ? "bg-gray-50 text-gray-900"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                        ? "bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
+                        : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white",
                       collapsed && "justify-center"
                     )}
                   >
@@ -241,14 +255,14 @@ export function Sidebar() {
 
             {/* User Profile */}
             {!collapsed && (
-              <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
                     <span className="text-sm font-medium text-white">A</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">Admin User</p>
-                    <p className="text-xs text-gray-500 truncate">admin@servispro.com</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">Admin User</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">admin@servispro.com</p>
                   </div>
                 </div>
               </div>

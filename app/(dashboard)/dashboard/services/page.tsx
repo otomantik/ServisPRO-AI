@@ -66,11 +66,11 @@ export default function ServicesPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Servisler</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Servisler</h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
             Tüm servis kayıtlarını yönetin ve takip edin
           </p>
         </div>
@@ -96,18 +96,19 @@ export default function ServicesPage() {
           {services.length === 0 ? (
             <p className="text-center text-gray-500 py-8">Henüz servis kaydı bulunmamaktadır.</p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Servis No</TableHead>
-                  <TableHead>Müşteri</TableHead>
-                  <TableHead>Cihaz</TableHead>
-                  <TableHead>Durum</TableHead>
-                  <TableHead>Tutar</TableHead>
-                  <TableHead>Tarih</TableHead>
-                  <TableHead className="text-right">İşlemler</TableHead>
-                </TableRow>
-              </TableHeader>
+            <div className="overflow-x-auto -mx-6 px-6">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="min-w-[100px]">Servis No</TableHead>
+                    <TableHead className="min-w-[150px]">Müşteri</TableHead>
+                    <TableHead className="min-w-[150px] hidden sm:table-cell">Cihaz</TableHead>
+                    <TableHead className="min-w-[120px]">Durum</TableHead>
+                    <TableHead className="min-w-[100px]">Tutar</TableHead>
+                    <TableHead className="min-w-[100px] hidden md:table-cell">Tarih</TableHead>
+                    <TableHead className="text-right min-w-[80px]">İşlemler</TableHead>
+                  </TableRow>
+                </TableHeader>
               <TableBody>
                 {services.map((service) => {
                   const statusInfo = getStatusBadge(service.status);
@@ -115,24 +116,29 @@ export default function ServicesPage() {
 
                   return (
                     <TableRow key={service.id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">{service.serviceNo}</TableCell>
-                      <TableCell>{service.customer?.name || "—"}</TableCell>
+                      <TableCell className="font-medium text-sm">{service.serviceNo}</TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{service.deviceBrand || "—"}</div>
-                          <div className="text-sm text-gray-500">{service.deviceType || "—"}</div>
+                          <div className="font-medium text-sm">{service.customer?.name || "—"}</div>
+                          <div className="text-xs text-gray-500 sm:hidden">{service.deviceBrand}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">
+                        <div>
+                          <div className="font-medium text-sm">{service.deviceBrand || "—"}</div>
+                          <div className="text-xs text-gray-500">{service.deviceType || "—"}</div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge className={statusInfo.color}>
+                        <Badge className={`${statusInfo.color} text-xs whitespace-nowrap`}>
                           <StatusIcon className="w-3 h-3 mr-1" />
-                          {statusInfo.label}
+                          <span className="hidden sm:inline">{statusInfo.label}</span>
                         </Badge>
                       </TableCell>
-                      <TableCell className="font-semibold">
+                      <TableCell className="font-semibold text-sm whitespace-nowrap">
                         {formatCurrency(service.totalCost)}
                       </TableCell>
-                      <TableCell className="text-sm text-gray-600">
+                      <TableCell className="text-xs text-gray-600 hidden md:table-cell">
                         {formatDate(new Date(service.receivedDate))}
                       </TableCell>
                       <TableCell className="text-right">
@@ -146,7 +152,8 @@ export default function ServicesPage() {
                   );
                 })}
               </TableBody>
-            </Table>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

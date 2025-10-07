@@ -55,7 +55,8 @@ export default function NewCustomerPage() {
           setCategories(data.filter((c: Category) => c.type === 'customer'))
         }
       } catch (err) {
-        console.error("Failed to load categories:", err)
+        logger.error("Failed to load categories", err, { context: 'NewCustomerPage' })
+        showError("Kategoriler yüklenirken hata oluştu")
       }
     }
     loadCategories()
@@ -83,13 +84,19 @@ export default function NewCustomerPage() {
 
       if (res.ok) {
         const customer = await res.json()
+        showSuccess("Müşteri başarıyla oluşturuldu!")
         router.push(routes.customers.view(customer.id))
       } else {
         const errorData = await res.json()
-        setError(errorData.error || "Müşteri oluşturulurken bir hata oluştu.")
+        const errorMsg = errorData.error || "Müşteri oluşturulurken bir hata oluştu."
+        setError(errorMsg)
+        showError(errorMsg)
       }
     } catch (err: any) {
-      setError(err.message || "Bağlantı hatası oluştu.")
+      const errorMsg = err.message || "Bağlantı hatası oluştu."
+      setError(errorMsg)
+      logger.error("Customer creation error", err, { context: 'NewCustomerPage' })
+      showError(errorMsg)
     } finally {
       setSubmitting(false)
     }
