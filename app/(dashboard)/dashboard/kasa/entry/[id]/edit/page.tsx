@@ -13,7 +13,9 @@ import Link from "next/link"
 import { routes } from "@/lib/routes"
 import { expenseCategories, suggestExpenseDescription } from "@/lib/summary"
 
-export default function EditKasaEntryPage({ params }: { params: { id: string } }) {
+export default function EditKasaEntryPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  // In client components, params is actually sync despite the type
+  const params = paramsPromise as unknown as { id: string };
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)

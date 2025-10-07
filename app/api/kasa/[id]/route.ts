@@ -4,11 +4,12 @@ import { summarizeEntryTR } from "@/lib/summary"
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const entry = await prisma.ledgerEntry.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         debit: true,
         credit: true,
@@ -52,15 +53,16 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json()
     const { amount, description, date } = body
 
     // Find existing entry
     const existing = await prisma.ledgerEntry.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { cashNote: true },
     })
 
@@ -73,7 +75,7 @@ export async function PATCH(
 
     // Update entry
     const updated = await prisma.ledgerEntry.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         amount: amount ? parseFloat(amount) : undefined,
         note: description,
@@ -104,12 +106,13 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     // Delete will cascade to cashNote due to onDelete: Cascade
     await prisma.ledgerEntry.delete({
-      where: { id: params.id },
+      where: { id },
     })
 
     return NextResponse.json({

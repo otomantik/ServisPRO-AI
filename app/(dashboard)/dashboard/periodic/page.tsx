@@ -2,6 +2,9 @@ import { prisma } from "@/lib/prisma";
 import { formatDate, formatCurrency } from "@/lib/utils";
 import { Plus } from "lucide-react";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 async function getPeriodicMaintenances() {
   return await prisma.periodicMaintenance.findMany({
     orderBy: { createdAt: "desc" },

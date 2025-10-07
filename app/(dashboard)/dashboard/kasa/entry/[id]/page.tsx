@@ -36,7 +36,9 @@ interface EntryDetails {
   createdAt: string
 }
 
-export default function KasaEntryViewPage({ params }: { params: { id: string } }) {
+export default function KasaEntryViewPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  // In client components, params is actually sync despite the type
+  const params = paramsPromise as unknown as { id: string };
   const router = useRouter()
   const [entry, setEntry] = useState<EntryDetails | null>(null)
   const [loading, setLoading] = useState(true)

@@ -3,13 +3,14 @@ import { prisma } from "@/lib/prisma";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await req.json();
     
     const category = await prisma.category.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         type: data.type,
         name: data.name,
@@ -28,11 +29,12 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await prisma.category.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });

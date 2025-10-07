@@ -57,7 +57,7 @@ export default function CustomersPage() {
           setCustomers(data.customers || data)
         }
       } catch (error) {
-        logger.error('Failed to load customers', error, { context: 'CustomersPage' })
+        console.error('Failed to load customers', error)
       } finally {
         setLoading(false)
       }

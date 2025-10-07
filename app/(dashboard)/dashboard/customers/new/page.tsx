@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { showError, showSuccess } from "@/lib/toast-helpers"
 import { 
   ArrowLeft, 
   Save, 
@@ -55,7 +56,7 @@ export default function NewCustomerPage() {
           setCategories(data.filter((c: Category) => c.type === 'customer'))
         }
       } catch (err) {
-        logger.error("Failed to load categories", err, { context: 'NewCustomerPage' })
+        console.error("Failed to load categories", err)
         showError("Kategoriler yüklenirken hata oluştu")
       }
     }
@@ -95,7 +96,7 @@ export default function NewCustomerPage() {
     } catch (err: any) {
       const errorMsg = err.message || "Bağlantı hatası oluştu."
       setError(errorMsg)
-      logger.error("Customer creation error", err, { context: 'NewCustomerPage' })
+      console.error("Customer creation error", err)
       showError(errorMsg)
     } finally {
       setSubmitting(false)

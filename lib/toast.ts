@@ -72,7 +72,7 @@ export const toastPromise = <T,>(
   messages: {
     loading: string
     success: string
-    error: string
+    error: string | ((err: any) => string)
   }
 ) => {
   return toast.promise(promise, messages)

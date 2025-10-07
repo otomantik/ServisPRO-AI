@@ -37,7 +37,9 @@ interface Customer {
   isSupplier: boolean
 }
 
-export default function EditCustomerPage({ params }: { params: { id: string } }) {
+export default function EditCustomerPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  // In client components, params is actually sync despite the type
+  const params = paramsPromise as unknown as { id: string };
   const router = useRouter()
   const [categories, setCategories] = useState<Category[]>([])
   const [customer, setCustomer] = useState<Customer | null>(null)

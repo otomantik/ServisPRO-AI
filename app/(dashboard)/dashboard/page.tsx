@@ -74,7 +74,7 @@ export default function DashboardPage() {
           setStats(data)
         }
       } catch (error) {
-        logger.error('Failed to load dashboard', error, { context: 'DashboardPage' })
+        console.error('Failed to load dashboard', error)
       } finally {
         setLoading(false)
       }

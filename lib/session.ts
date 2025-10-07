@@ -39,7 +39,7 @@ export async function createSession(user: {
     .sign(SECRET_KEY)
 
   // Set cookie
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   cookieStore.set('session', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -57,7 +57,7 @@ export async function createSession(user: {
 export async function verifySession(token: string): Promise<SessionData | null> {
   try {
     const verified = await jwtVerify(token, SECRET_KEY)
-    return verified.payload as SessionData
+    return verified.payload as unknown as SessionData
   } catch (error) {
     return null
   }
@@ -68,7 +68,7 @@ export async function verifySession(token: string): Promise<SessionData | null> 
  */
 export async function getSession(): Promise<SessionData | null> {
   try {
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const token = cookieStore.get('session')?.value
 
     if (!token) {
@@ -120,7 +120,7 @@ export async function getCurrentUser() {
  * Delete session
  */
 export async function deleteSession() {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   cookieStore.delete('session')
 }
 

@@ -7,6 +7,9 @@
 
 import { showSuccess, showError, showWarning, toastPromise } from './toast'
 
+// Re-export for convenience
+export { showSuccess, showError, showWarning }
+
 /**
  * Başarılı işlem bildirimi
  * @example
@@ -87,7 +90,7 @@ export const apiRequest = async <T>(
     {
       loading: `${entityName} ${action}...`,
       success: `${entityName} başarıyla ${action}!`,
-      error: (err) => err.message || `${entityName} ${action} başarısız!`
+      error: (err: any) => err.message || `${entityName} ${action} başarısız!`
     }
   )
 }

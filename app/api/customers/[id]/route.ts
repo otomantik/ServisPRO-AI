@@ -3,11 +3,12 @@ import { prisma } from "@/lib/prisma"
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const customer = await prisma.customer.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         category: true,
         services: {
@@ -44,13 +45,14 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await req.json()
     
     const customer = await prisma.customer.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         name: data.name,
         phone: data.phone,
@@ -77,11 +79,12 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await prisma.customer.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ success: true })

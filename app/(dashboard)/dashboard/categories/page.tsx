@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Plus, Edit, Trash2 } from "lucide-react";
+import { showError, showSuccess } from "@/lib/toast-helpers";
 
 interface Category {
   id: string;
@@ -30,7 +31,7 @@ export default function CategoriesPage() {
       const data = await res.json();
       setCategories(data);
     } catch (error) {
-      logger.error("Error fetching categories", error, { context: 'CategoriesPage' });
+      console.error("Error fetching categories", error);
       showError("Kategoriler yüklenirken hata oluştu");
     } finally {
       setLoading(false);
@@ -61,7 +62,7 @@ export default function CategoriesPage() {
         showError("İşlem başarısız oldu!");
       }
     } catch (error) {
-      logger.error("Category save error", error, { context: 'CategoriesPage' });
+      console.error("Category save error", error);
       showError("Bağlantı hatası oluştu!");
     } finally {
       setLoading(false);
@@ -86,7 +87,7 @@ export default function CategoriesPage() {
         showError("Kategori silinemedi!");
       }
     } catch (error) {
-      logger.error("Category delete error", error, { context: 'CategoriesPage' });
+      console.error("Category delete error", error);
       showError("Bağlantı hatası oluştu!");
     }
   };

@@ -45,8 +45,9 @@ async function getCustomer(id: string) {
   return { customer, stats: { totalSpent, completedServices, activeServices } }
 }
 
-export default async function CustomerViewPage({ params }: { params: { id: string } }) {
-  const data = await getCustomer(params.id)
+export default async function CustomerViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const data = await getCustomer(id)
 
   if (!data) {
     notFound()

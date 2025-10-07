@@ -27,7 +27,7 @@ export async function createSession(userId: string): Promise<string> {
  */
 export async function getCurrentUser(): Promise<AuthUser | null> {
   try {
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const sessionId = cookieStore.get('session-id')?.value
     
     if (!sessionId) {
@@ -84,7 +84,7 @@ export async function verifyCredentials(email: string, password: string): Promis
  * Destroy session
  */
 export async function destroySession(): Promise<void> {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   cookieStore.delete('session-id')
   cookieStore.delete('auth-token')
 }
