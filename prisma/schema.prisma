@@ -1,0 +1,441 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  phone         String?
+  phone2        String?
+  address       String?
+  city          String?
+  district      String?
+  position      String    @default("Teknisyen")
+  status        Boolean   @default(true)
+  hireDate      DateTime  @default(now())
+  photoUrl      String?
+  tcNo          String?
+  permissions   String?   // JSON string
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  services      Service[] @relation("ServiceTechnician")
+  operatedServices Service[] @relation("ServiceOperator")
+  cashTransactions CashTransaction[]
+  serviceOperations ServiceOperation[]
+  serviceNotes  ServiceNote[]
+
+  @@map("users")
+}
+
+model Customer {
+  id          String    @id @default(cuid())
+  type        String    @default("individual") // individual, corporate
+  name        String
+  phone       String
+  phone2      String?
+  email       String?
+  address     String?
+  city        String?
+  district    String?
+  taxNo       String?
+  taxOffice   String?
+  categoryId  String?
+  isSupplier  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  category    Category? @relation(fields: [categoryId], references: [id])
+  services    Service[]
+  periodicMaintenances PeriodicMaintenance[]
+  invoices    Invoice[]
+  payments    Payment[]
+
+  @@map("customers")
+}
+
+model Service {
+  id              String    @id @default(cuid())
+  serviceNo       String    @unique
+  customerId      String
+  technicianId    String?
+  deviceBrand     String?
+  deviceType      String?
+  deviceModel     String?
+  serialNo        String?
+  problem         String?
+  solution        String?
+  diagnosis       String?
+  status          String    @default("pending") // pending, in_progress, completed, cancelled
+  priority        String    @default("normal")
+  receivedDate    DateTime  @default(now())
+  deliveryDate    DateTime?
+  laborCost       Float     @default(0)
+  partsCost       Float     @default(0)
+  totalCost       Float     @default(0)
+  paymentStatus   String    @default("unpaid")
+  periodicMaintenanceId String?
+  signatureData   String?
+  photos          String?   // JSON string
+  // Yeni alanlar
+  serviceSource   String?   // Servis kaynağı (telefon)
+  operatorId      String?   // Operatör ID
+  operatorNote    String?   // Operatör notu
+  availableTime   String?   // Müsait olma zamanı
+  warrantyEnd     DateTime? // Garanti bitiş tarihi
+  warrantyDaysLeft Int?     // Garanti gün sayısı
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  technician      User?     @relation("ServiceTechnician", fields: [technicianId], references: [id])
+  operator        User?     @relation("ServiceOperator", fields: [operatorId], references: [id])
+  periodicMaintenance PeriodicMaintenance? @relation(fields: [periodicMaintenanceId], references: [id])
+  stockMovements  StockMovement[]
+  cashTransactions CashTransaction[]
+  serviceOperations ServiceOperation[]
+  serviceNotes    ServiceNote[]
+  servicePhotos   ServicePhoto[]
+
+  @@map("services")
+}
+
+model ServiceOperation {
+  id            String   @id @default(cuid())
+  serviceId     String
+  operationDate DateTime
+  operatorId    String
+  operationName String
+  description   String?
+  createdAt     DateTime @default(now())
+
+  service       Service @relation(fields: [serviceId], references: [id])
+  operator      User    @relation(fields: [operatorId], references: [id])
+
+  @@map("service_operations")
+}
+
+model ServiceNote {
+  id        String   @id @default(cuid())
+  serviceId String
+  noteDate  DateTime
+  noteBy    String
+  content   String
+  createdAt DateTime @default(now())
+
+  service   Service @relation(fields: [serviceId], references: [id])
+  user      User    @relation(fields: [noteBy], references: [id])
+
+  @@map("service_notes")
+}
+
+model ServicePhoto {
+  id        String   @id @default(cuid())
+  serviceId String
+  photoUrl  String
+  caption   String?
+  createdAt DateTime @default(now())
+
+  service   Service @relation(fields: [serviceId], references: [id])
+
+  @@map("service_photos")
+}
+
+model PeriodicMaintenance {
+  id                    String    @id @default(cuid())
+  customerId            String
+  companyName           String
+  phone                 String
+  address               String?
+  startDate             DateTime
+  endDate               DateTime
+  maintenanceCount      Int       @default(0)
+  status                Boolean   @default(true)
+  partsIncluded         Boolean   @default(false)
+  pricePerMaintenance   Float     @default(0)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  
+  customer              Customer  @relation(fields: [customerId], references: [id])
+  devices               PeriodicDevice[]
+  services              Service[]
+
+  @@map("periodic_maintenances")
+}
+
+model PeriodicDevice {
+  id                      String    @id @default(cuid())
+  periodicMaintenanceId   String
+  brand                   String
+  type                    String
+  model                   String?
+  serialNo                String?
+  location                String?
+  createdAt               DateTime  @default(now())
+  
+  periodicMaintenance     PeriodicMaintenance @relation(fields: [periodicMaintenanceId], references: [id], onDelete: Cascade)
+
+  @@map("periodic_devices")
+}
+
+model Stock {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  name        String
+  categoryId  String?
+  price       Float     @default(0)
+  unit        String    @default("Adet")
+  quantity    Int       @default(0)
+  minQuantity Int       @default(0)
+  description String?
+  photos      String?   // JSON string
+  brands      String?   // JSON string
+  deviceTypes String?   // JSON string
+  status      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  category    Category? @relation(fields: [categoryId], references: [id])
+  movements   StockMovement[]
+
+  @@map("stocks")
+}
+
+model StockMovement {
+  id          String    @id @default(cuid())
+  stockId     String
+  type        String    // in, out
+  quantity    Int
+  serviceId   String?
+  supplierId  String?
+  warehouseId String?
+  unitPrice   Float     @default(0)
+  totalPrice  Float     @default(0)
+  date        DateTime  @default(now())
+  notes       String?
+  createdAt   DateTime  @default(now())
+  
+  stock       Stock     @relation(fields: [stockId], references: [id])
+  service     Service?  @relation(fields: [serviceId], references: [id])
+
+  @@map("stock_movements")
+}
+
+model CashTransaction {
+  id              String    @id @default(cuid())
+  type            String    // income, expense
+  amount          Float
+  paymentMethod   String    @default("cash")
+  paymentTypeId   String?
+  paymentStatus   String    @default("completed")
+  relatedServiceId String?
+  technicianId    String?
+  supplierId      String?
+  description     String?
+  transactionDate DateTime  @default(now())
+  installmentCount Int      @default(1)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  paymentType     PaymentType? @relation(fields: [paymentTypeId], references: [id])
+  service         Service?  @relation(fields: [relatedServiceId], references: [id])
+  technician      User?     @relation(fields: [technicianId], references: [id])
+
+  @@map("cash_transactions")
+}
+
+model PaymentType {
+  id          String    @id @default(cuid())
+  name        String
+  direction   String    // incoming, outgoing
+  createdAt   DateTime  @default(now())
+  
+  transactions CashTransaction[]
+
+  @@map("payment_types")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  type        String    // customer, stock
+  name        String
+  createdAt   DateTime  @default(now())
+  
+  customers   Customer[]
+  stocks      Stock[]
+
+  @@map("categories")
+}
+
+// ============================================
+// DOUBLE-ENTRY LEDGER SYSTEM
+// ============================================
+// Note: Using String instead of Enum for SQLite compatibility
+// AccountType: asset|liability|equity|revenue|expense
+// InvoiceStatus: draft|open|paid|overdue|void
+// PayMethod: cash|card|transfer
+
+model Account {
+  id          String      @id @default(cuid())
+  code        String      @unique
+  name        String
+  type        String      // AccountType: asset|liability|equity|revenue|expense
+  isCashLike  Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  
+  debitEntries  LedgerEntry[] @relation("debit")
+  creditEntries LedgerEntry[] @relation("credit")
+  
+  @@index([type])
+  @@map("accounts")
+}
+
+model LedgerEntry {
+  id        String   @id @default(cuid())
+  date      DateTime @default(now())
+  debitId   String
+  creditId  String
+  amount    Float
+  currency  String   @default("TRY")
+  refType   String?
+  refId     String?
+  note      String?
+  meta      String?   // JSON string
+  createdAt DateTime @default(now())
+
+  debit     Account  @relation("debit", fields: [debitId], references: [id])
+  credit    Account  @relation("credit", fields: [creditId], references: [id])
+  cashNote  CashNote?
+
+  @@index([date])
+  @@index([refType, refId])
+  @@map("ledger_entries")
+}
+
+model CashNote {
+  id        String      @id @default(cuid())
+  entryId   String      @unique
+  summary   String
+  tags      String?
+  createdAt DateTime    @default(now())
+  
+  entry     LedgerEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@map("cash_notes")
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  invoiceNo   String        @unique
+  customerId  String
+  issueDate   DateTime      @default(now())
+  dueDate     DateTime?
+  subtotal    Float
+  vatRate     Float         @default(20.00)
+  discount    Float         @default(0)
+  total       Float
+  currency    String        @default("TRY")
+  status      String        @default("draft")  // InvoiceStatus: draft|open|paid|overdue|void
+  note        String?
+  meta        String?       // JSON string
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  customer    Customer      @relation(fields: [customerId], references: [id])
+  payments    Payment[]
+
+  @@index([status, dueDate])
+  @@index([issueDate])
+  @@map("invoices")
+}
+
+model Payment {
+  id          String     @id @default(cuid())
+  customerId  String
+  invoiceId   String?
+  method      String     // PayMethod: cash|card|transfer
+  amount      Float
+  fee         Float      @default(0)
+  note        String?
+  meta        String?    // JSON string
+  createdAt   DateTime   @default(now())
+
+  customer    Customer   @relation(fields: [customerId], references: [id])
+  invoice     Invoice?   @relation(fields: [invoiceId], references: [id])
+
+  @@index([createdAt])
+  @@map("payments")
+}
+
+// ============================================
+// AI & RECOMMENDATIONS SYSTEM
+// ============================================
+
+model Insight {
+  id          String   @id @default(cuid())
+  scope       String   // finance|customers|inventory|operations
+  title       String
+  detail      String
+  severity    String   @default("info")
+  confidence  Float    @default(0.7)
+  createdAt   DateTime @default(now())
+
+  @@index([scope])
+  @@index([createdAt])
+  @@map("insights")
+}
+
+model Opportunity {
+  id          String     @id @default(cuid())
+  kind        String     // upsell|collection|cost_save|anomaly|invoice|reorder
+  targetId    String?
+  title       String
+  estValue    Float      @default(0)
+  actionPlan  String     // JSON string
+  status      String     @default("proposed") // proposed|scheduled|applied|dismissed|hidden|failed
+  scheduleAt  DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  reminders   Reminder[]
+
+  @@index([status])
+  @@index([kind])
+  @@map("opportunities")
+}
+
+model Reminder {
+  id             String      @id @default(cuid())
+  opportunityId  String
+  remindAt       DateTime
+  note           String?
+  createdAt      DateTime    @default(now())
+
+  opportunity    Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@index([remindAt])
+  @@map("reminders")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actor     String
+  action    String
+  entity    String
+  entityId  String
+  meta      String?  // JSON string
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
