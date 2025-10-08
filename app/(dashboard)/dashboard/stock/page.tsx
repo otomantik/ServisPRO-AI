@@ -1,23 +1,64 @@
-import { prisma } from "@/lib/prisma";
+"use client";
+
+import { useState, useEffect } from "react";
 import { formatCurrency } from "@/lib/utils";
-import { Plus, AlertCircle } from "lucide-react";
+import { Plus, AlertCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
+export default function StockPage() {
+  const [stocks, setStocks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-async function getStocks() {
-  return await prisma.stock.findMany({
-    take: 50,
-    orderBy: { createdAt: "desc" },
-    include: {
-      category: true,
-    },
-  });
-}
+  useEffect(() => {
+    async function loadStocks() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/stocks');
+        if (response.ok) {
+          const data = await response.json();
+          setStocks(data || []);
+        } else {
+          setError('Stok verileri yüklenirken hata oluştu');
+        }
+      } catch (err) {
+        console.error('Stock page error:', err);
+        setError('Stok verileri yüklenirken hata oluştu');
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadStocks();
+  }, []);
 
-export default async function StockPage() {
-  const stocks = await getStocks();
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <div className="border-b border-[#1b2033] pb-3">
+          <h1 className="text-2xl font-bold text-[#3d3d3d]">STOKLAR</h1>
+        </div>
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-4">
+        <div className="border-b border-[#1b2033] pb-3">
+          <h1 className="text-2xl font-bold text-[#3d3d3d]">STOKLAR</h1>
+        </div>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
+            <p className="text-red-800">{error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
