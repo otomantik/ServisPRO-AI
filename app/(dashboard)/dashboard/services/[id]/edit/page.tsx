@@ -365,7 +365,7 @@ export default function ServiceEditPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">İşçilik Maliyeti (₺)</label>
                 <input
                   type="text"
-                  value={service.laborCost === 0 ? '' : service.laborCost.toString()}
+                  value={(service.laborCost || 0) === 0 ? '' : (service.laborCost || 0).toString()}
                   onChange={(e) => {
                     const value = e.target.value.replace(/^0+/, '') || '0';
                     setService({...service, laborCost: parseFloat(value) || 0});
@@ -380,7 +380,7 @@ export default function ServiceEditPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Parça Maliyeti (₺)</label>
                 <input
                   type="text"
-                  value={service.partsCost === 0 ? '' : service.partsCost.toString()}
+                  value={(service.partsCost || 0) === 0 ? '' : (service.partsCost || 0).toString()}
                   onChange={(e) => {
                     const value = e.target.value.replace(/^0+/, '') || '0';
                     setService({...service, partsCost: parseFloat(value) || 0});
