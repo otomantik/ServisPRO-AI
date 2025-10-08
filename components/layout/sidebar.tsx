@@ -104,14 +104,18 @@ const bottomNavigation = [
   },
 ]
 
-export function Sidebar() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+interface SidebarProps {
+  isOpen?: boolean
+  onClose?: () => void
+}
+
+export function Sidebar({ isOpen = false, onClose = () => {} }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
 
   // Body scroll kontrolü - mobile menü açıldığında scroll'u kapat
   useEffect(() => {
-    if (sidebarOpen) {
+    if (isOpen) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = 'unset'
@@ -121,34 +125,34 @@ export function Sidebar() {
     return () => {
       document.body.style.overflow = 'unset'
     }
-  }, [sidebarOpen])
+  }, [isOpen])
 
   return (
     <>
       {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
+      {isOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity" onClick={() => setSidebarOpen(false)} />
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity" onClick={onClose} />
         </div>
       )}
 
       {/* Sidebar */}
       <div className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
-        sidebarOpen ? "translate-x-0" : "-translate-x-full",
-        collapsed && "lg:w-16"
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 shadow-lg lg:shadow-none transform transition-transform duration-300 ease-in-out lg:translate-x-0",
+        isOpen ? "translate-x-0" : "-translate-x-full",
+        collapsed && "lg:w-20"
       )}>
-        <div className="flex h-full flex-col">
+        <div className="flex h-full flex-col overflow-y-auto">
           {/* Header */}
-          <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 flex-shrink-0">
             {!collapsed && (
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Wrench className="w-5 h-5 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-lg font-bold text-gray-900 dark:text-white">ServisPro AI</h1>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Akıllı Yönetim</p>
+                <div className="min-w-0">
+                  <h1 className="text-lg font-bold text-gray-900 truncate">ServisPro AI</h1>
+                  <p className="text-xs text-gray-500 truncate">Akıllı Yönetim</p>
                 </div>
               </div>
             )}
@@ -158,7 +162,7 @@ export function Sidebar() {
                 variant="ghost"
                 size="icon"
                 className="lg:hidden"
-                onClick={() => setSidebarOpen(false)}
+                onClick={onClose}
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -175,13 +179,13 @@ export function Sidebar() {
 
           {/* Search */}
           {!collapsed && (
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-b border-gray-200">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Ara..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white"
                 />
               </div>
             </div>
@@ -198,8 +202,8 @@ export function Sidebar() {
                   className={cn(
                     "group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                     isActive
-                      ? "bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-200 border border-blue-200 dark:border-blue-700"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white",
+                      ? "bg-blue-50 text-blue-700 border border-blue-200"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-gray-900",
                     collapsed && "justify-center"
                   )}
                 >
@@ -222,7 +226,7 @@ export function Sidebar() {
           </nav>
 
           {/* Bottom Navigation */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-t border-gray-200">
             <div className="space-y-1">
               {bottomNavigation.map((item) => {
                 const isActive = pathname === item.href
@@ -233,8 +237,8 @@ export function Sidebar() {
                     className={cn(
                       "group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                       isActive
-                        ? "bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
-                        : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white",
+                        ? "bg-gray-50 text-gray-900"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
                       collapsed && "justify-center"
                     )}
                   >
@@ -255,14 +259,14 @@ export function Sidebar() {
 
             {/* User Profile */}
             {!collapsed && (
-              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="mt-4 pt-4 border-t border-gray-200">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-sm font-medium text-white">A</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">Admin User</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">admin@servispro.com</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">Admin User</p>
+                    <p className="text-xs text-gray-500 truncate">admin@oto.com</p>
                   </div>
                 </div>
               </div>
@@ -271,17 +275,6 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Mobile menu button */}
-      <div className="lg:hidden fixed top-4 left-4 z-40">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setSidebarOpen(true)}
-          className="bg-white shadow-lg"
-        >
-          <Menu className="w-5 h-5" />
-        </Button>
-      </div>
     </>
   )
 }
