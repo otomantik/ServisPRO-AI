@@ -134,7 +134,7 @@ export default function DashboardPage() {
             <Wrench className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl sm:text-3xl font-bold text-blue-600">
+            <div className="text-2xl sm:text-3xl font-bold text-blue-700">
               {stats.services.total}
             </div>
             <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
@@ -160,7 +160,7 @@ export default function DashboardPage() {
             <Users className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl sm:text-3xl font-bold text-green-600">
+            <div className="text-2xl sm:text-3xl font-bold text-green-700">
               {stats.customers.total}
             </div>
             <div className="flex items-center text-xs text-green-600 mt-3">
@@ -179,7 +179,7 @@ export default function DashboardPage() {
             <Package className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl sm:text-3xl font-bold text-orange-600">
+            <div className="text-2xl sm:text-3xl font-bold text-orange-700">
               {stats.stock.total}
             </div>
             <div className="flex items-center text-xs mt-3">
@@ -251,7 +251,7 @@ export default function DashboardPage() {
                         {Math.abs(incomeChange).toFixed(1)}%
                       </div>
                     )}
-                    <span className="text-lg font-bold text-green-600">
+                    <span className="text-lg font-bold text-green-700">
                       {formatCurrencyTR(stats.financial.thisMonthIncome)}
                     </span>
                   </div>
@@ -270,7 +270,7 @@ export default function DashboardPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">Bu Ay Gider</span>
-                  <span className="text-lg font-bold text-red-600">
+                  <span className="text-lg font-bold text-red-700">
                     {formatCurrencyTR(stats.financial.thisMonthExpense)}
                   </span>
                 </div>
@@ -288,7 +288,7 @@ export default function DashboardPage() {
               <div className="pt-4 border-t">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">Bu Ay Net Kar</span>
-                  <span className={`text-2xl font-bold ${(stats.financial.thisMonthIncome - stats.financial.thisMonthExpense) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <span className={`text-2xl font-bold ${(stats.financial.thisMonthIncome - stats.financial.thisMonthExpense) >= 0 ? 'text-green-700' : 'text-red-700'}`}>
                     {formatCurrencyTR(stats.financial.thisMonthIncome - stats.financial.thisMonthExpense)}
                   </span>
                 </div>
@@ -296,16 +296,16 @@ export default function DashboardPage() {
 
               {/* Yıllık Toplam */}
               <div className="pt-4 border-t">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <p className="text-xs text-gray-600 mb-1">Yıllık Toplam Gelir</p>
-                    <p className="text-lg font-bold text-green-600">
+                    <p className="text-sm sm:text-base lg:text-lg font-bold text-green-700 break-all">
                       {formatCurrencyTR(stats.financial.totalIncome)}
                     </p>
                   </div>
                   <div className="text-center p-4 bg-red-50 rounded-lg">
                     <p className="text-xs text-gray-600 mb-1">Yıllık Toplam Gider</p>
-                    <p className="text-lg font-bold text-red-600">
+                    <p className="text-sm sm:text-base lg:text-lg font-bold text-red-700 break-all">
                       {formatCurrencyTR(stats.financial.totalExpense)}
                     </p>
                   </div>
@@ -416,22 +416,22 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <div className="text-center p-3 bg-green-50 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">Gelir</p>
-                  <p className="text-lg font-bold text-green-600">
+                  <p className="text-sm sm:text-base lg:text-lg font-bold text-green-700 break-all">
                     {formatCurrencyTR(stats.financial.totalIncome)}
                   </p>
                 </div>
                 <div className="text-center p-3 bg-red-50 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">Gider</p>
-                  <p className="text-lg font-bold text-red-600">
+                  <p className="text-sm sm:text-base lg:text-lg font-bold text-red-700 break-all">
                     {formatCurrencyTR(stats.financial.totalExpense)}
                   </p>
                 </div>
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">Bakiye</p>
-                  <p className={`text-lg font-bold ${stats.financial.netProfit >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
+                  <p className={`text-sm sm:text-base lg:text-lg font-bold break-all ${stats.financial.netProfit >= 0 ? 'text-blue-700' : 'text-red-700'}`}>
                     {formatCurrencyTR(stats.financial.netProfit)}
                   </p>
                 </div>
@@ -467,22 +467,22 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <div className="text-center p-3 bg-orange-50 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">Toplam</p>
-                  <p className="text-lg font-bold text-orange-600">
+                  <p className="text-sm sm:text-base lg:text-lg font-bold text-orange-700 break-all">
                     {formatCurrencyTR(stats.financial.totalIncome)}
                   </p>
                 </div>
                 <div className="text-center p-3 bg-green-50 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">Tahsil</p>
-                  <p className="text-lg font-bold text-green-600">
+                  <p className="text-sm sm:text-base lg:text-lg font-bold text-green-700 break-all">
                     {formatCurrencyTR(stats.financial.thisMonthIncome)}
                   </p>
                 </div>
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">Kalan</p>
-                  <p className="text-lg font-bold text-blue-600">
+                  <p className="text-sm sm:text-base lg:text-lg font-bold text-blue-700 break-all">
                     {formatCurrencyTR(stats.financial.totalIncome - stats.financial.thisMonthIncome)}
                   </p>
                 </div>
@@ -521,30 +521,30 @@ export default function DashboardPage() {
             {stats.recentServices.slice(0, 5).map((service) => (
               <div 
                 key={service.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                className="flex items-center justify-between p-3 sm:p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                 onClick={() => window.location.href = `/dashboard/services/${service.id}`}
               >
-                <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                     service.status === 'completed' ? 'bg-green-100' :
                     service.status === 'in_progress' ? 'bg-blue-100' : 'bg-orange-100'
                   }`}>
                     {service.status === 'completed' ? (
-                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                     ) : service.status === 'in_progress' ? (
-                      <Activity className="w-5 h-5 text-blue-600" />
+                      <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                     ) : (
-                      <Clock className="w-5 h-5 text-orange-600" />
+                      <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
                     )}
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900">#{service.serviceNo}</p>
-                    <p className="text-sm text-gray-600">{service.customerName}</p>
-                    <p className="text-xs text-gray-500">{service.deviceBrand} {service.deviceType}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-gray-900 text-sm sm:text-base truncate">#{service.serviceNo}</p>
+                    <p className="text-xs sm:text-sm text-gray-600 truncate">{service.customerName}</p>
+                    <p className="text-xs text-gray-500 truncate">{service.deviceBrand} {service.deviceType}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-gray-900">{formatCurrencyTR(service.totalCost)}</p>
+                <div className="text-right min-w-0 flex-shrink-0">
+                  <p className="font-bold text-gray-900 text-sm sm:text-base break-all">{formatCurrencyTR(service.totalCost)}</p>
                   <p className="text-xs text-gray-600">
                     {service.status === 'completed' ? 'Tamamlandı' :
                      service.status === 'in_progress' ? 'Devam Ediyor' : 'Bekliyor'}

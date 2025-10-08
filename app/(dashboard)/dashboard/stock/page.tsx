@@ -41,14 +41,14 @@ export default async function StockPage() {
       <div className="bg-white rounded-lg overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="bg-gray-500 text-white text-sm">
-              <th className="p-3 text-left">STOK KODU</th>
-              <th className="p-3 text-left">ÜRÜN ADI</th>
-              <th className="p-3 text-left">KATEGORİ</th>
-              <th className="p-3 text-center">ADET</th>
-              <th className="p-3 text-center">MIN. ADET</th>
-              <th className="p-3 text-right">FİYAT</th>
-              <th className="p-3 text-left">DURUM</th>
+            <tr className="bg-blue-600 text-white text-xs sm:text-sm">
+              <th className="p-2 sm:p-3 text-left">STOK KODU</th>
+              <th className="p-2 sm:p-3 text-left">ÜRÜN ADI</th>
+              <th className="p-2 sm:p-3 text-left hidden sm:table-cell">KATEGORİ</th>
+              <th className="p-2 sm:p-3 text-center">ADET</th>
+              <th className="p-2 sm:p-3 text-center hidden sm:table-cell">MIN. ADET</th>
+              <th className="p-2 sm:p-3 text-right">FİYAT</th>
+              <th className="p-2 sm:p-3 text-left hidden md:table-cell">DURUM</th>
             </tr>
           </thead>
           <tbody>
@@ -60,18 +60,18 @@ export default async function StockPage() {
                   key={stock.id}
                   className="border-b hover:bg-gray-50 cursor-pointer transition"
                 >
-                  <td className="p-3 text-sm font-mono">{stock.code}</td>
-                  <td className="p-3 text-sm">
-                    <span className="font-bold text-black">{stock.name}</span>
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm font-mono">{stock.code}</td>
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm min-w-0">
+                    <span className="font-bold text-black truncate block">{stock.name}</span>
                   </td>
-                  <td className="p-3 text-sm">
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm hidden sm:table-cell">
                     {stock.category && (
                       <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
                         {stock.category.name}
                       </span>
                     )}
                   </td>
-                  <td className="p-3 text-sm text-center">
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm text-center">
                     <span
                       className={`font-bold ${
                         isLowStock ? "text-red-600" : "text-green-600"
@@ -80,13 +80,13 @@ export default async function StockPage() {
                       {stock.quantity}
                     </span>
                   </td>
-                  <td className="p-3 text-sm text-center text-gray-500">
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm text-center text-gray-500 hidden sm:table-cell">
                     {stock.minQuantity}
                   </td>
-                  <td className="p-3 text-sm text-right font-bold">
-                    {formatCurrency(stock.price)}
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm text-right font-bold">
+                    <span className="break-all">{formatCurrency(stock.price)}</span>
                   </td>
-                  <td className="p-3 text-sm">
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm hidden md:table-cell">
                     {isLowStock && (
                       <div className="flex items-center text-red-600 text-xs">
                         <AlertCircle className="w-4 h-4 mr-1" />

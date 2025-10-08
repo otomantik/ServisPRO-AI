@@ -86,13 +86,13 @@ export default function CashPage() {
         ) : (
         <table className="w-full">
           <thead>
-            <tr className="bg-gray-500 text-white text-sm">
-              <th className="p-3 text-left">TARİH</th>
-              <th className="p-3 text-left">ÖDEME TÜRÜ</th>
-              <th className="p-3 text-left">AÇIKLAMA</th>
-              <th className="p-3 text-left">ÖDEME ŞEKLİ</th>
-              <th className="p-3 text-left">DURUM</th>
-              <th className="p-3 text-right">TUTAR</th>
+            <tr className="bg-blue-600 text-white text-xs sm:text-sm">
+              <th className="p-2 sm:p-3 text-left">TARİH</th>
+              <th className="p-2 sm:p-3 text-left hidden sm:table-cell">ÖDEME TÜRÜ</th>
+              <th className="p-2 sm:p-3 text-left">AÇIKLAMA</th>
+              <th className="p-2 sm:p-3 text-left hidden md:table-cell">ÖDEME ŞEKLİ</th>
+              <th className="p-2 sm:p-3 text-left hidden sm:table-cell">DURUM</th>
+              <th className="p-2 sm:p-3 text-right">TUTAR</th>
             </tr>
           </thead>
           <tbody>
@@ -104,26 +104,33 @@ export default function CashPage() {
                   key={transaction.id}
                   className="border-b hover:bg-gray-50 cursor-pointer transition"
                 >
-                  <td className="p-3 text-sm">
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm">
                     {formatDateTime(transaction.transactionDate)}
                   </td>
-                  <td className="p-3 text-sm font-bold">
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm font-bold hidden sm:table-cell">
                     {transaction.paymentType?.name || "Diğer"}
                   </td>
-                  <td className="p-3 text-sm">
-                    {transaction.description && (
-                      <div className="text-xs">{transaction.description}</div>
-                    )}
-                    {transaction.technician && (
-                      <div className="text-xs text-gray-500">
-                        Personel: {transaction.technician.name}
-                      </div>
-                    )}
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm min-w-0">
+                    <div className="truncate">
+                      {transaction.description && (
+                        <div className="text-xs truncate">{transaction.description}</div>
+                      )}
+                      {transaction.technician && (
+                        <div className="text-xs text-gray-500 truncate">
+                          Personel: {transaction.technician.name}
+                        </div>
+                      )}
+                      {!transaction.description && !transaction.technician && (
+                        <div className="text-xs text-gray-500">
+                          {transaction.paymentType?.name || "Diğer"}
+                        </div>
+                      )}
+                    </div>
                   </td>
-                  <td className="p-3 text-sm">
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm hidden md:table-cell">
                     <span className="capitalize">{transaction.paymentMethod}</span>
                   </td>
-                  <td className="p-3 text-sm">
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm hidden sm:table-cell">
                     <span
                       className={`px-2 py-1 rounded text-xs ${
                         transaction.paymentStatus === "completed"
@@ -136,8 +143,8 @@ export default function CashPage() {
                         : "Beklemede"}
                     </span>
                   </td>
-                  <td className="p-3 text-sm text-right font-bold">
-                    <span className={isIncome ? "text-green-600" : "text-red-600"}>
+                  <td className="p-2 sm:p-3 text-xs sm:text-sm text-right font-bold">
+                    <span className={`break-all ${isIncome ? "text-green-600" : "text-red-600"}`}>
                       {isIncome ? "+" : "-"}
                       {formatCurrency(transaction.amount)}
                     </span>

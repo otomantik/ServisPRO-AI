@@ -69,8 +69,8 @@ export default function ServicesPage() {
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Servisler</h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Servisler</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">
             Tüm servis kayıtlarını yönetin ve takip edin
           </p>
         </div>
@@ -116,17 +116,17 @@ export default function ServicesPage() {
 
                   return (
                     <TableRow key={service.id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium text-sm">{service.serviceNo}</TableCell>
-                      <TableCell>
+                      <TableCell className="font-medium text-xs sm:text-sm">{service.serviceNo}</TableCell>
+                      <TableCell className="min-w-0">
                         <div>
-                          <div className="font-medium text-sm">{service.customer?.name || "—"}</div>
-                          <div className="text-xs text-gray-500 sm:hidden">{service.deviceBrand}</div>
+                          <div className="font-medium text-xs sm:text-sm truncate">{service.customer?.name || "—"}</div>
+                          <div className="text-xs text-gray-500 sm:hidden truncate">{service.deviceBrand}</div>
                         </div>
                       </TableCell>
-                      <TableCell className="hidden sm:table-cell">
+                      <TableCell className="hidden sm:table-cell min-w-0">
                         <div>
-                          <div className="font-medium text-sm">{service.deviceBrand || "—"}</div>
-                          <div className="text-xs text-gray-500">{service.deviceType || "—"}</div>
+                          <div className="font-medium text-xs sm:text-sm truncate">{service.deviceBrand || "—"}</div>
+                          <div className="text-xs text-gray-500 truncate">{service.deviceType || "—"}</div>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -135,7 +135,7 @@ export default function ServicesPage() {
                           <span className="hidden sm:inline">{statusInfo.label}</span>
                         </Badge>
                       </TableCell>
-                      <TableCell className="font-semibold text-sm whitespace-nowrap">
+                      <TableCell className="font-semibold text-xs sm:text-sm whitespace-nowrap break-all">
                         {formatCurrency(service.totalCost)}
                       </TableCell>
                       <TableCell className="text-xs text-gray-600 hidden md:table-cell">
