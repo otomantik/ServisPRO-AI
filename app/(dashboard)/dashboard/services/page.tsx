@@ -116,17 +116,17 @@ export default function ServicesPage() {
 
                   return (
                     <TableRow key={service.id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium text-xs sm:text-sm">{service.serviceNo}</TableCell>
+                      <TableCell className="font-medium text-xs sm:text-sm text-gray-900">{service.serviceNo}</TableCell>
                       <TableCell className="min-w-0">
                         <div>
-                          <div className="font-medium text-xs sm:text-sm truncate">{service.customer?.name || "—"}</div>
-                          <div className="text-xs text-gray-500 sm:hidden truncate">{service.deviceBrand}</div>
+                          <div className="font-medium text-xs sm:text-sm text-gray-900 truncate">{service.customer?.name || "—"}</div>
+                          <div className="text-xs text-gray-600 sm:hidden truncate">{service.deviceBrand}</div>
                         </div>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell min-w-0">
                         <div>
-                          <div className="font-medium text-xs sm:text-sm truncate">{service.deviceBrand || "—"}</div>
-                          <div className="text-xs text-gray-500 truncate">{service.deviceType || "—"}</div>
+                          <div className="font-medium text-xs sm:text-sm text-gray-900 truncate">{service.deviceBrand || "—"}</div>
+                          <div className="text-xs text-gray-600 truncate">{service.deviceType || "—"}</div>
                         </div>
                       </TableCell>
                       <TableCell>

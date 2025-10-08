@@ -26,6 +26,16 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     
+    // Fiyat verilerini temizle - baştaki sıfırları kaldır
+    const cleanPrice = (value: any): number => {
+      if (value === null || value === undefined || value === '') return 0;
+      const stringValue = value.toString().replace(/^0+/, '') || '0';
+      return parseFloat(stringValue) || 0;
+    };
+    
+    const laborCost = cleanPrice(data.laborCost);
+    const partsCost = cleanPrice(data.partsCost);
+    
     // Generate service number
     const year = new Date().getFullYear();
     const lastService = await prisma.service.findFirst({
@@ -57,8 +67,8 @@ export async function POST(req: NextRequest) {
         problem: data.problem || null,
         priority: data.priority || 'normal',
         status: 'pending',
-        laborCost: data.laborCost || 0,
-        partsCost: data.partsCost || 0,
+        laborCost: laborCost,
+        partsCost: partsCost,
       },
       include: {
         customer: true,

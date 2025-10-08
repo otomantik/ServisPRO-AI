@@ -364,21 +364,31 @@ export default function ServiceEditPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">İşçilik Maliyeti (₺)</label>
                 <input
-                  type="number"
-                  step="0.01"
-                  value={service.laborCost || 0}
-                  onChange={(e) => setService({...service, laborCost: parseFloat(e.target.value) || 0})}
+                  type="text"
+                  value={service.laborCost === 0 ? '' : service.laborCost.toString()}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/^0+/, '') || '0';
+                    setService({...service, laborCost: parseFloat(value) || 0});
+                  }}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Parça Maliyeti (₺)</label>
                 <input
-                  type="number"
-                  step="0.01"
-                  value={service.partsCost || 0}
-                  onChange={(e) => setService({...service, partsCost: parseFloat(e.target.value) || 0})}
+                  type="text"
+                  value={service.partsCost === 0 ? '' : service.partsCost.toString()}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/^0+/, '') || '0';
+                    setService({...service, partsCost: parseFloat(value) || 0});
+                  }}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="0"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                 />
               </div>
               <div className="border-t pt-4">

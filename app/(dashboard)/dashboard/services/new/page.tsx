@@ -38,22 +38,43 @@ export default function NewServicePage() {
     });
   }, []);
 
+  // Baştaki sıfırları kaldıran ve geçerli sayı döndüren fonksiyon
+  const parsePrice = (value: string): number => {
+    if (!value || value === '') return 0;
+    // Baştaki sıfırları kaldır ve sayıya çevir
+    const cleanValue = value.replace(/^0+/, '') || '0';
+    return parseFloat(cleanValue) || 0;
+  };
+
+  const handlePriceChange = (field: 'laborCost' | 'partsCost', value: string) => {
+    const numericValue = parsePrice(value);
+    setFormData({ ...formData, [field]: numericValue });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      // Form verilerini temizle - baştaki sıfırları kaldır
+      const cleanFormData = {
+        ...formData,
+        laborCost: parsePrice(formData.laborCost.toString()),
+        partsCost: parsePrice(formData.partsCost.toString())
+      };
+
       const res = await fetch("/api/services", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(cleanFormData),
       });
 
       if (res.ok) {
         showSuccess("Servis kaydı oluşturuldu!");
         router.push("/dashboard/services");
       } else {
-        showError("Servis kaydedilemedi!");
+        const errorData = await res.json();
+        showError(errorData.message || "Servis kaydedilemedi!");
       }
     } catch (error) {
       console.error("Service creation error", error);
@@ -176,24 +197,26 @@ export default function NewServicePage() {
             <div>
               <label className="block text-sm font-medium mb-1">İşçilik Ücreti (₺)</label>
               <input
-                type="number"
-                value={formData.laborCost}
-                onChange={(e) => setFormData({ ...formData, laborCost: Number(e.target.value) })}
+                type="text"
+                value={formData.laborCost === 0 ? '' : formData.laborCost.toString()}
+                onChange={(e) => handlePriceChange('laborCost', e.target.value)}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-[#36ba82]"
-                min="0"
-                step="0.01"
+                placeholder="0"
+                inputMode="numeric"
+                pattern="[0-9]*"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium mb-1">Parça Ücreti (₺)</label>
               <input
-                type="number"
-                value={formData.partsCost}
-                onChange={(e) => setFormData({ ...formData, partsCost: Number(e.target.value) })}
+                type="text"
+                value={formData.partsCost === 0 ? '' : formData.partsCost.toString()}
+                onChange={(e) => handlePriceChange('partsCost', e.target.value)}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-[#36ba82]"
-                min="0"
-                step="0.01"
+                placeholder="0"
+                inputMode="numeric"
+                pattern="[0-9]*"
               />
             </div>
           </div>
