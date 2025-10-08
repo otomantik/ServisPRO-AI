@@ -3,6 +3,9 @@ import { formatCurrency } from "@/lib/utils";
 import { Plus, AlertCircle } from "lucide-react";
 import Link from "next/link";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 async function getStocks() {
   return await prisma.stock.findMany({
     take: 50,
