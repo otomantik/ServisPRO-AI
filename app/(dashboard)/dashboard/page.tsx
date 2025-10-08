@@ -104,10 +104,10 @@ export default function DashboardPage() {
       {/* Welcome Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Hoş Geldiniz! 👋
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base">
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">
             ServisPro AI - Akıllı servis yönetimi ile işlerinizi kolaylaştırın
           </p>
         </div>
