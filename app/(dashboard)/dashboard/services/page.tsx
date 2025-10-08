@@ -115,7 +115,7 @@ export default function ServicesPage() {
                   const StatusIcon = statusInfo.icon;
 
                   return (
-                    <TableRow key={service.id} className="hover:bg-gray-50">
+                    <TableRow key={service.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => window.location.href = `/dashboard/services/${service.id}`}>
                       <TableCell className="font-medium text-xs sm:text-sm text-gray-900">{service.serviceNo}</TableCell>
                       <TableCell className="min-w-0">
                         <div>
@@ -142,11 +142,7 @@ export default function ServicesPage() {
                         {formatDate(new Date(service.receivedDate))}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Link href={routes.services.view(service.id)}>
-                          <Button variant="ghost" size="sm">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                        </Link>
+                        <span className="text-xs text-gray-400">Detay</span>
                       </TableCell>
                     </TableRow>
                   );

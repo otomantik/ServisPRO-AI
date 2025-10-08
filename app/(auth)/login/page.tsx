@@ -34,17 +34,17 @@ export default function LoginPage() {
       const data = await response.json()
 
       if (response.ok) {
-        // BaÅŸarÄ±lÄ± giriÅŸ - dashboard'a yÃ¶nlendir
+        // Başarılı giriş - dashboard'a yönlendir
         router.push("/dashboard")
       } else {
         setError(
-     typeof data.error === 'string' 
-       ? data.error 
-       : data.error?.message || data.message || "Giriş yapılamadı"
-   )
+          typeof data.error === 'string' 
+            ? data.error 
+            : data.error?.message || data.message || "Giriş yapılamadı"
+        )
       }
     } catch (err) {
-      setError("Bir hata oluÅŸtu. LÃ¼tfen tekrar deneyin.")
+      setError("Bir hata oluştu. Lütfen tekrar deneyin.")
     } finally {
       setLoading(false)
     }
@@ -53,7 +53,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo ve BaÅŸlÄ±k */}
+        {/* Logo ve Başlık */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-4">
             <Home className="w-8 h-8 text-white" />
@@ -62,7 +62,7 @@ export default function LoginPage() {
             ServisPro AI
           </h1>
           <p className="text-gray-600">
-            AkÄ±llÄ± Servis YÃ¶netimi
+            Akıllı Servis Yönetimi
           </p>
         </div>
 
@@ -70,10 +70,10 @@ export default function LoginPage() {
         <Card className="shadow-xl border-0">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-2xl font-bold text-gray-900">
-              HoÅŸ Geldiniz
+              Hoş Geldiniz
             </CardTitle>
             <CardDescription>
-              HesabÄ±nÄ±za giriÅŸ yapÄ±n
+              Hesabınıza giriş yapın
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -101,13 +101,13 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Åifre</Label>
+                <Label htmlFor="password">Şifre</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10"
@@ -132,7 +132,7 @@ export default function LoginPage() {
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5"
                 disabled={loading}
               >
-                {loading ? "GiriÅŸ yapÄ±lÄ±yor..." : "GiriÅŸ Yap"}
+                {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
               </Button>
             </form>
 
@@ -148,10 +148,10 @@ export default function LoginPage() {
                   className="w-full justify-start text-left"
                   onClick={() => {
                     setEmail("admin@oto.com")
-                    setPassword("123456")
+                    setPassword("admin123")
                   }}
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <span className="text-sm">Admin - admin@oto.com</span>
                   </div>
@@ -162,10 +162,10 @@ export default function LoginPage() {
                   className="w-full justify-start text-left"
                   onClick={() => {
                     setEmail("ahmet@oto.com")
-                    setPassword("123456")
+                    setPassword("ahmet123")
                   }}
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                     <span className="text-sm">Teknisyen - ahmet@oto.com</span>
                   </div>
@@ -176,12 +176,12 @@ export default function LoginPage() {
                   className="w-full justify-start text-left"
                   onClick={() => {
                     setEmail("melek@oto.com")
-                    setPassword("123456")
+                    setPassword("melek123")
                   }}
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                    <span className="text-sm">OperatÃ¶r - melek@oto.com</span>
+                    <span className="text-sm">Operatör - melek@oto.com</span>
                   </div>
                 </Button>
               </div>
@@ -192,11 +192,10 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500">
-            Â© 2024 Oto-Beyaz AI. TÃ¼m haklarÄ± saklÄ±dÄ±r.
+            © 2024 Oto-Beyaz AI. Tüm hakları saklıdır.
           </p>
         </div>
       </div>
     </div>
   )
 }
-

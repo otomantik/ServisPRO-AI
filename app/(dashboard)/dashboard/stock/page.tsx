@@ -59,6 +59,7 @@ export default async function StockPage() {
                 <tr
                   key={stock.id}
                   className="border-b hover:bg-gray-50 cursor-pointer transition"
+                  onClick={() => window.location.href = `/dashboard/stock/${stock.id}`}
                 >
                   <td className="p-2 sm:p-3 text-xs sm:text-sm font-mono">{stock.code}</td>
                   <td className="p-2 sm:p-3 text-xs sm:text-sm min-w-0">

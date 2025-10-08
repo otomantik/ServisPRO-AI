@@ -103,6 +103,7 @@ export default function CashPage() {
                 <tr
                   key={transaction.id}
                   className="border-b hover:bg-gray-50 cursor-pointer transition"
+                  onClick={() => window.location.href = `/dashboard/kasa/${transaction.id}`}
                 >
                   <td className="p-2 sm:p-3 text-xs sm:text-sm">
                     {formatDateTime(transaction.transactionDate)}
