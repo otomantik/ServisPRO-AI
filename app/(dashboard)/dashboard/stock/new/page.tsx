@@ -3,10 +3,16 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+type Category = {
+  id: string;
+  name: string;
+  type: string;
+};
+
 export default function NewStockPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     categoryId: "",

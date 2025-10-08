@@ -3,12 +3,27 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+type PaymentType = {
+  id: string;
+  name: string;
+};
+
+type User = {
+  id: string;
+  name: string;
+};
+
+type Service = {
+  id: string;
+  serviceNo: string;
+};
+
 export default function NewCashTransactionPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [paymentTypes, setPaymentTypes] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [services, setServices] = useState([]);
+  const [paymentTypes, setPaymentTypes] = useState<PaymentType[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
   const [formData, setFormData] = useState({
     type: "income",
     amount: 0,

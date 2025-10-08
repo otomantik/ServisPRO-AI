@@ -5,8 +5,22 @@ import { formatCurrency } from "@/lib/utils";
 import { Plus, AlertCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
 
+type StockItem = {
+  id: string;
+  code: string;
+  name: string;
+  quantity: number;
+  minQuantity: number;
+  price: number;
+  status?: boolean;
+  category?: {
+    id: string;
+    name: string;
+  };
+};
+
 export default function StockPage() {
-  const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState<StockItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -93,8 +107,11 @@ export default function StockPage() {
             </tr>
           </thead>
           <tbody>
-            {stocks.map((stock) => {
-              const isLowStock = stock.quantity <= stock.minQuantity;
+            {stocks.map((stock: StockItem) => {
+              // Güvenli sayı üret (undefined ihtimaline karşı)
+              const qty = Number(stock.quantity ?? 0);
+              const minQty = Number(stock.minQuantity ?? 0);
+              const isLowStock = qty <= minQty;
               
               return (
                 <tr
@@ -119,11 +136,11 @@ export default function StockPage() {
                         isLowStock ? "text-red-600" : "text-green-600"
                       }`}
                     >
-                      {stock.quantity}
+                      {qty}
                     </span>
                   </td>
                   <td className="p-2 sm:p-3 text-xs sm:text-sm text-center text-gray-500 hidden sm:table-cell">
-                    {stock.minQuantity}
+                    {minQty}
                   </td>
                   <td className="p-2 sm:p-3 text-xs sm:text-sm text-right font-bold">
                     <span className="break-all">{formatCurrency(stock.price)}</span>

@@ -4,11 +4,21 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { showSuccess, showError } from "@/lib/toast";
 
+type Customer = {
+  id: string;
+  name: string;
+};
+
+type Technician = {
+  id: string;
+  name: string;
+};
+
 export default function NewServicePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [customers, setCustomers] = useState([]);
-  const [technicians, setTechnicians] = useState([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [technicians, setTechnicians] = useState<Technician[]>([]);
   const [formData, setFormData] = useState({
     customerId: "",
     technicianId: "",
