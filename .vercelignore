@@ -15,7 +15,7 @@ coverage
 prisma/migrations
 .vscode
 .idea
-test-*.js
-check-*.js
+test-*.ps1
+test-all-*.ps1
 seed-log.txt
 
