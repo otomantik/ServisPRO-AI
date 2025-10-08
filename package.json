@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 5000",
-    "prebuild": "node scripts/check-ui.js && node -e \"console.log('NEXT=',require('next/package.json').version,'REACT=',require('react/package.json').version,'FM=',require('framer-motion/package.json').version)\"",
+    "prebuild": "node scripts/ensure-ui.js && node -e \"console.log('\\n=== Versions ===','\\nNEXT=',require('next/package.json').version,'\\nREACT=',require('react/package.json').version,'\\nFRAMER=',require('framer-motion/package.json').version)\"",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
