@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const validation = validateRequest(loginSchema, body);
     if (!validation.success) {
       return NextResponse.json(
-        { success: false, error: { message: 'GeÃ§ersiz giriÅŸ bilgileri', details: validation.errors } },
+        { success: false, error: { message: 'Geçersiz giriş bilgileri', details: validation.errors } },
         { status: 422 }
       );
     }
@@ -26,13 +26,13 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user || !user.status) {
-      return unauthorizedError("E-posta veya ÅŸifre hatalÄ±");
+      return unauthorizedError("E-posta veya şifre hatalı");
     }
 
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      return unauthorizedError("E-posta veya ÅŸifre hatalÄ±");
+      return unauthorizedError("E-posta veya şifre hatalı");
     }
 
     // Create session
